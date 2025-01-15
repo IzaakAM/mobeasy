@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23.2.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Semantic Release
+        run: npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        if: github.ref_name == 'main' || github.ref_name == 'develop'
+        run: |
+          docker build -t registry.robin-joseph.fr/mobeasy-api:${{ github.ref_name }} .
+        env:
+          DOCKER_BUILDKIT: 1
+
+      - name: Log in to Docker registry
+        if: github.ref_name == 'main' || github.ref_name == 'develop'
+        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login registry.robin-joseph.fr --username "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+
+      - name: Tag and Push Docker image for develop
+        if: github.ref_name == 'develop'
+        run: |
+          docker tag registry.robin-joseph.fr/mobeasy-api:${{ github.ref_name }} registry.robin-joseph.fr/mobeasy-api:develop
+          docker push registry.robin-joseph.fr/mobeasy-api:develop
+
+      - name: Tag and Push Docker image for main
+        if: github.ref_name == 'main'
+        run: |
+          # Get the last tag from Git
+          VERSION=$(git describe --tags $(git rev-list --tags --max-count=1))
+          echo "Version is $VERSION"
+          # Tag the image with the latest tag and version
+          docker tag registry.robin-joseph.fr/mobeasy-api:${{ github.ref_name }} registry.robin-joseph.fr/mobeasy-api:latest
+          docker tag registry.robin-joseph.fr/mobeasy-api:${{ github.ref_name }} registry.robin-joseph.fr/mobeasy-api:$VERSION
+          # Push the images to the registry
+          docker push registry.robin-joseph.fr/mobeasy-api:latest
+          docker push registry.robin-joseph.fr/mobeasy-api:$VERSION
