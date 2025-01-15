@@ -1,6 +1,9 @@
 package com.mobeasy.api.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
@@ -29,9 +32,11 @@ public class Parking {
     @Column(name = "capacity")
     private Integer capacity;
 
-    @Column(name = "date_creation", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @CreationTimestamp
+    @Column(name = "date_creation", updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime dateCreation;
 
+    @UpdateTimestamp
     @Column(name = "date_modification", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime dateModification;
 
@@ -91,4 +96,5 @@ public class Parking {
     public void setDateModification(ZonedDateTime dateModification) {
         this.dateModification = dateModification;
     }
+
 }

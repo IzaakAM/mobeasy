@@ -49,4 +49,69 @@ public class ParkingController {
         parkingService.deleteParkingById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Parking> updateParking(@PathVariable Short id, @RequestBody Parking updatedParking) {
+        Parking existingParking = parkingService.findParkingById(id);
+
+        if (existingParking == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // On remplace tous les champs pertinents (mise à jour complète)
+        existingParking.setName(updatedParking.getName());
+        existingParking.setX(updatedParking.getX());
+        existingParking.setY(updatedParking.getY());
+        existingParking.setCapacity(updatedParking.getCapacity());
+        // Si vous avez d'autres champs à mettre à jour, n'oubliez pas de les copier.
+
+        // On enregistre en base
+        Parking savedParking = parkingService.saveParking(existingParking);
+
+        return ResponseEntity.ok(savedParking);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Parking> partialUpdateParking(
+            @PathVariable Short id,
+            @RequestBody Parking patchParking
+    ) {
+        // 1) Récupérer l'entité existante depuis la DB via le Service/Repository
+        Parking existingParking = parkingService.findParkingById(id);
+
+        // 2) Gérer le cas où l’ID n’existe pas
+        if (existingParking == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // 3) Mettre à jour seulement les champs non-nuls.
+        //    Si patchParking.getXXX() == null, on ne touche pas à la valeur existante.
+
+        // Nom
+        if (patchParking.getName() != null) {
+            existingParking.setName(patchParking.getName());
+        }
+
+        // Coordonnées X
+        if (patchParking.getX() != null) {
+            existingParking.setX(patchParking.getX());
+        }
+
+        // Coordonnées Y
+        if (patchParking.getY() != null) {
+            existingParking.setY(patchParking.getY());
+        }
+
+        // Capacité
+        if (patchParking.getCapacity() != null) {
+            existingParking.setCapacity(patchParking.getCapacity());
+        }
+
+
+        // 4) Sauvegarder la version modifiée en BDD
+        Parking savedParking = parkingService.saveParking(existingParking);
+
+        // 5) Retourner la ressource mise à jour
+        return ResponseEntity.ok(savedParking);
+    }
 }
