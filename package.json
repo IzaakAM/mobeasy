@@ -1,6 +1,6 @@
 {
   "name": "mobeasy-api",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Mobeasy API",
   "scripts": {
     "semantic-release": "semantic-release"
