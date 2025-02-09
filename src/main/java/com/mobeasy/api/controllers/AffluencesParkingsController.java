@@ -1,13 +1,19 @@
 package com.mobeasy.api.controllers;
 
+import com.mobeasy.api.dto.AffluencesParkingsDTO;
 import com.mobeasy.api.entities.AffluencesParkings;
 import com.mobeasy.api.services.AffluencesParkingsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/affluences-parkings")
@@ -16,15 +22,63 @@ public class AffluencesParkingsController {
     @Autowired
     private AffluencesParkingsService affluencesParkingsService;
 
-    // GET : Récupérer les affluences d'un parking
-    @GetMapping("/{parkingId}")
-    public ResponseEntity<List<AffluencesParkings>> getAffluencesByParkingId(@PathVariable Short parkingId) {
-        return ResponseEntity.ok(affluencesParkingsService.findAffluencesByParkingId(parkingId));
+    @Operation(summary = "Créer une nouvelle affluence par ID de parking",
+            description = "Crée une nouvelle entrée d'affluence pour un parking en utilisant l'ID du parking et le nombre de véhicules.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Affluence créée avec succès",
+                    content = @Content(schema = @Schema(implementation = AffluencesParkings.class))),
+            @ApiResponse(responseCode = "400", description = "Requête invalide")
+    })
+    @PostMapping("/by-id")
+    public ResponseEntity<AffluencesParkings> createAffluenceById(
+            @Parameter(description = "ID du parking", required = true) @RequestParam Short parkingId,
+            @Parameter(description = "Nombre de véhicules", required = true) @RequestParam Integer nbVehicule) {
+        AffluencesParkings created = affluencesParkingsService.createAffluenceById(parkingId, nbVehicule);
+        return ResponseEntity.ok(created);
     }
 
-    // POST : Ajouter une nouvelle affluence
-    @PostMapping
-    public ResponseEntity<AffluencesParkings> addAffluence(@RequestBody AffluencesParkings affluence) {
-        return ResponseEntity.ok(affluencesParkingsService.saveAffluence(affluence));
+    @Operation(summary = "Créer une nouvelle affluence par nom de parking",
+            description = "Crée une nouvelle entrée d'affluence pour un parking en utilisant le nom du parking et le nombre de véhicules.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Affluence créée avec succès",
+                    content = @Content(schema = @Schema(implementation = AffluencesParkings.class))),
+            @ApiResponse(responseCode = "400", description = "Requête invalide")
+    })
+    @PostMapping("/by-name")
+    public ResponseEntity<AffluencesParkings> createAffluenceByName(
+            @Parameter(description = "Nom du parking", required = true) @RequestParam String parkingName,
+            @Parameter(description = "Nombre de véhicules", required = true) @RequestParam Integer nbVehicule) {
+        AffluencesParkings created = affluencesParkingsService.createAffluenceByName(parkingName, nbVehicule);
+        return ResponseEntity.ok(created);
+    }
+
+    @Operation(summary = "Récupérer la dernière affluence d'un parking par ID",
+            description = "Retourne la dernière affluence enregistrée pour un parking donné selon son ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Dernière affluence trouvée",
+                    content = @Content(schema = @Schema(implementation = AffluencesParkingsDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Aucune affluence trouvée")
+    })
+    @GetMapping("/last/{parkingId}")
+    public ResponseEntity<AffluencesParkingsDTO> getLastAffluenceByParkingId(
+            @Parameter(description = "ID du parking", required = true) @PathVariable Short parkingId) {
+        Optional<AffluencesParkingsDTO> dtoOpt = affluencesParkingsService.getLastAffluenceByParkingId(parkingId);
+        return dtoOpt.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Récupérer la dernière affluence d'un parking par nom",
+            description = "Retourne la dernière affluence enregistrée pour un parking donné selon son nom.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Dernière affluence trouvée",
+                    content = @Content(schema = @Schema(implementation = AffluencesParkingsDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Aucune affluence trouvée")
+    })
+    @GetMapping("/last/by-name/{parkingName}")
+    public ResponseEntity<AffluencesParkingsDTO> getLastAffluenceByParkingName(
+            @Parameter(description = "Nom du parking", required = true) @PathVariable String parkingName) {
+        Optional<AffluencesParkingsDTO> dtoOpt = affluencesParkingsService.getLastAffluenceByParkingName(parkingName);
+        return dtoOpt.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
