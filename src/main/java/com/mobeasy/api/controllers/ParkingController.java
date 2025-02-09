@@ -22,7 +22,9 @@ public class ParkingController {
     private ParkingService parkingService;
 
     @Operation(summary = "Récupérer tous les parkings",
-            description = "Retourne la liste de tous les parkings ayant une capacité supérieure à 0.")
+            description = "Retourne la liste de tous les parkings ayant une capacité supérieure à 0."
+    )
+
     @ApiResponse(responseCode = "200", description = "Liste des parkings récupérée avec succès",
             content = @Content(schema = @Schema(implementation = Parking.class)))
     @GetMapping
