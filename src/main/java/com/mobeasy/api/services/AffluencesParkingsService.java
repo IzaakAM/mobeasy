@@ -85,5 +85,17 @@ public class AffluencesParkingsService {
                 .map(mapperService::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public void deleteAffluenceById(Short affluenceId) {
+        // Vérifie si l'ID existe avant de supprimer
+        if (!affluencesParkingsRepository.existsById(affluenceId)) {
+            throw new RuntimeException("Affluence non trouvée pour l'ID: " + affluenceId);
+        }
+        affluencesParkingsRepository.deleteById(affluenceId);
+    }
+
+    public void deleteAllAffluences() {
+        affluencesParkingsRepository.deleteAll();
+    }
 }
 

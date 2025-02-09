@@ -119,4 +119,30 @@ public class AffluencesParkingsController {
         }
         return ResponseEntity.ok(affluencesList);
     }
+
+    @Operation(summary = "Supprimer une affluence par ID",
+            description = "Supprime l'affluence correspondant à l'ID fourni (de l'entité AffluencesParkings).")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Affluence supprimée avec succès"),
+            @ApiResponse(responseCode = "404", description = "Affluence non trouvée")
+    })
+    @DeleteMapping("/{affluenceId}")
+    public ResponseEntity<Void> deleteAffluenceById(
+            @Parameter(description = "ID de l'affluence", required = true) @PathVariable Short affluenceId) {
+
+        affluencesParkingsService.deleteAffluenceById(affluenceId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping
+    @Operation(summary = "Supprimer toutes les affluences de parkings",
+            description = "Supprime toutes les entrées d'affluences de parking dans la base de données.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Toutes les affluences ont été supprimées"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne")
+    })
+    public ResponseEntity<Void> deleteAllAffluences() {
+        affluencesParkingsService.deleteAllAffluences();
+        return ResponseEntity.noContent().build();
+    }
 }
