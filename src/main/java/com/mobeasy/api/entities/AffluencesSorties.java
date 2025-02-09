@@ -1,11 +1,13 @@
 package com.mobeasy.api.entities;
 
 import com.mobeasy.api.entities.Sortie;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "Affluences_sorties")
+@Tag(name = "Affluences des sorties", description = "gestion de l'affluence des sorties")
 public class AffluencesSorties {
 
     @Id
