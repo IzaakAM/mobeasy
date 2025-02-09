@@ -152,4 +152,16 @@ public class ParkingController {
         Parking savedParking = parkingService.saveParking(existingParking);
         return ResponseEntity.ok(savedParking);
     }
+
+    @Operation(summary = "Supprimer tous les parkings",
+            description = "Supprime tous les parkings existants.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Tous les parkings ont été supprimés avec succès")
+    })
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAllParkings() {
+        parkingService.deleteAllParkings();
+        return ResponseEntity.noContent().build();
+    }
+
 }

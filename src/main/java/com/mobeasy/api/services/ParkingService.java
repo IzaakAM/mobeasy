@@ -32,4 +32,8 @@ public class ParkingService {
     public void deleteParkingById(Short id) {
         parkingRepository.deleteById(id);
     }
+
+    public void deleteAllParkings() {
+        parkingRepository.deleteAll();
+    }
 }
