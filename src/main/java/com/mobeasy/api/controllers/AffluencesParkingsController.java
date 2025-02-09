@@ -1,6 +1,6 @@
 package com.mobeasy.api.controllers;
 
-import com.mobeasy.api.dto.AffluencesParkingsDTO;
+import com.mobeasy.api.entities.dto.AffluencesParkingsDTO;
 import com.mobeasy.api.entities.AffluencesParkings;
 import com.mobeasy.api.services.AffluencesParkingsService;
 import io.swagger.v3.oas.annotations.Operation;

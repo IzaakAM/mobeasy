@@ -1,9 +1,10 @@
 package com.mobeasy.api.services;
 
-import com.mobeasy.api.dto.AffluencesParkingsDTO;
+import com.mobeasy.api.entities.dto.AffluencesParkingsDTO;
 import com.mobeasy.api.entities.AffluencesParkings;
 import com.mobeasy.api.entities.Parking;
 import com.mobeasy.api.repositories.AffluencesParkingsRepository;
+import com.mobeasy.api.services.mappers.AffluenceParkingMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
