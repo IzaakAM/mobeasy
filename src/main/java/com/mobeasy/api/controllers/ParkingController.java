@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +17,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/parkings")
+@Tag(name = "Parkings", description = "Gestion des parkings")
 public class ParkingController {
 
     @Autowired
     private ParkingService parkingService;
 
     @Operation(summary = "Récupérer tous les parkings",
-            description = "Retourne la liste de tous les parkings ayant une capacité supérieure à 0.")
+            description = "Retourne la liste de tous les parkings ayant une capacité supérieure à 0."
+    )
+
     @ApiResponse(responseCode = "200", description = "Liste des parkings récupérée avec succès",
             content = @Content(schema = @Schema(implementation = Parking.class)))
     @GetMapping
@@ -152,4 +156,16 @@ public class ParkingController {
         Parking savedParking = parkingService.saveParking(existingParking);
         return ResponseEntity.ok(savedParking);
     }
+
+    @Operation(summary = "Supprimer tous les parkings",
+            description = "Supprime tous les parkings existants.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Tous les parkings ont été supprimés avec succès")
+    })
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAllParkings() {
+        parkingService.deleteAllParkings();
+        return ResponseEntity.noContent().build();
+    }
+
 }

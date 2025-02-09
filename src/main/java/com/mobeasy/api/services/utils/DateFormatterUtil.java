@@ -1,4 +1,4 @@
-package com.mobeasy.api.util;
+package com.mobeasy.api.services.utils;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;

@@ -21,5 +21,12 @@ public interface AffluencesParkingsRepository extends JpaRepository<AffluencesPa
 
     // Ajouter la méthode dérivée pour récupérer la dernière affluence
     Optional<AffluencesParkings> findFirstByParkingIdOrderByTimestampDesc(Short parkingId);
+
+    // Récupère toutes les affluences pour un parkingId donné, triées par timestamp desc
+    List<AffluencesParkings> findByParking_IdOrderByTimestampDesc(Short parkingId);
+
+    // Récupère toutes les affluences pour un parkingName donné, triées par timestamp desc
+    List<AffluencesParkings> findByParking_NameOrderByTimestampDesc(String parkingName);
+
 }
 

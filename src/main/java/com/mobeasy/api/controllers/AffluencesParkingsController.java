@@ -1,22 +1,26 @@
 package com.mobeasy.api.controllers;
 
-import com.mobeasy.api.dto.AffluencesParkingsDTO;
+import com.mobeasy.api.entities.dto.AffluencesParkingsDTO;
 import com.mobeasy.api.entities.AffluencesParkings;
 import com.mobeasy.api.services.AffluencesParkingsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/affluences-parkings")
+@Tag(name = "Affluences des parkings", description = "Gestion des affluences des parkings")
 public class AffluencesParkingsController {
 
     @Autowired
@@ -80,5 +84,65 @@ public class AffluencesParkingsController {
         Optional<AffluencesParkingsDTO> dtoOpt = affluencesParkingsService.getLastAffluenceByParkingName(parkingName);
         return dtoOpt.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Récupérer toutes les affluences d'un parking par ID",
+            description = "Retourne toutes les affluences enregistrées pour un parking donné selon son ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Liste de toutes les affluences pour ce parking",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = AffluencesParkingsDTO.class)))),
+            @ApiResponse(responseCode = "404", description = "Aucune affluence trouvée pour cet ID")
+    })
+    @GetMapping("/all/{parkingId}")
+    public ResponseEntity<List<AffluencesParkingsDTO>> getAllAffluencesByParkingId(
+            @Parameter(description = "ID du parking", required = true) @PathVariable Short parkingId) {
+        List<AffluencesParkingsDTO> affluencesList = affluencesParkingsService.getAllAffluencesByParkingId(parkingId);
+        if (affluencesList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(affluencesList);
+    }
+
+    @Operation(summary = "Récupérer toutes les affluences d'un parking par nom",
+            description = "Retourne toutes les affluences enregistrées pour un parking donné selon son nom.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Liste de toutes les affluences pour ce parking",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = AffluencesParkingsDTO.class)))),
+            @ApiResponse(responseCode = "404", description = "Aucune affluence trouvée pour ce nom de parking")
+    })
+    @GetMapping("/all/by-name/{parkingName}")
+    public ResponseEntity<List<AffluencesParkingsDTO>> getAllAffluencesByParkingName(
+            @Parameter(description = "Nom du parking", required = true) @PathVariable String parkingName) {
+        List<AffluencesParkingsDTO> affluencesList = affluencesParkingsService.getAllAffluencesByParkingName(parkingName);
+        if (affluencesList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(affluencesList);
+    }
+
+    @Operation(summary = "Supprimer une affluence par ID",
+            description = "Supprime l'affluence correspondant à l'ID fourni (de l'entité AffluencesParkings).")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Affluence supprimée avec succès"),
+            @ApiResponse(responseCode = "404", description = "Affluence non trouvée")
+    })
+    @DeleteMapping("/{affluenceId}")
+    public ResponseEntity<Void> deleteAffluenceById(
+            @Parameter(description = "ID de l'affluence", required = true) @PathVariable Short affluenceId) {
+
+        affluencesParkingsService.deleteAffluenceById(affluenceId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping
+    @Operation(summary = "Supprimer toutes les affluences de parkings",
+            description = "Supprime toutes les entrées d'affluences de parking dans la base de données.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Toutes les affluences ont été supprimées"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne")
+    })
+    public ResponseEntity<Void> deleteAllAffluences() {
+        affluencesParkingsService.deleteAllAffluences();
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,10 +1,13 @@
 package com.mobeasy.api.entities;
 
+import com.mobeasy.api.entities.Sortie;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "Affluences_sorties")
+@Tag(name = "Affluences des sorties", description = "gestion de l'affluence des sorties")
 public class AffluencesSorties {
 
     @Id
@@ -20,7 +23,7 @@ public class AffluencesSorties {
 
     @ManyToOne
     @JoinColumn(name = "sortie_id", referencedColumnName = "id", nullable = false)
-    private Sortie sortie;
+    private com.mobeasy.api.entities.Sortie sortie;
 
     // Getters et setters
     public Short getId() {
@@ -47,7 +50,7 @@ public class AffluencesSorties {
         this.timestamp = timestamp;
     }
 
-    public Sortie getSortie() {
+    public com.mobeasy.api.entities.Sortie getSortie() {
         return sortie;
     }
 

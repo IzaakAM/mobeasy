@@ -1,13 +1,16 @@
 package com.mobeasy.api.services;
 
-import com.mobeasy.api.dto.AffluencesParkingsDTO;
+import com.mobeasy.api.entities.dto.AffluencesParkingsDTO;
 import com.mobeasy.api.entities.AffluencesParkings;
 import com.mobeasy.api.entities.Parking;
 import com.mobeasy.api.repositories.AffluencesParkingsRepository;
+import com.mobeasy.api.services.mappers.AffluenceParkingMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AffluencesParkingsService {
@@ -64,4 +67,35 @@ public class AffluencesParkingsService {
         }
         return getLastAffluenceByParkingId(parking.getId());
     }
+
+    public List<AffluencesParkingsDTO> getAllAffluencesByParkingId(Short parkingId) {
+        List<AffluencesParkings> results =
+                affluencesParkingsRepository.findByParking_IdOrderByTimestampDesc(parkingId);
+
+        return results.stream()
+                .map(mapperService::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<AffluencesParkingsDTO> getAllAffluencesByParkingName(String parkingName) {
+        List<AffluencesParkings> results =
+                affluencesParkingsRepository.findByParking_NameOrderByTimestampDesc(parkingName);
+
+        return results.stream()
+                .map(mapperService::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public void deleteAffluenceById(Short affluenceId) {
+        // Vérifie si l'ID existe avant de supprimer
+        if (!affluencesParkingsRepository.existsById(affluenceId)) {
+            throw new RuntimeException("Affluence non trouvée pour l'ID: " + affluenceId);
+        }
+        affluencesParkingsRepository.deleteById(affluenceId);
+    }
+
+    public void deleteAllAffluences() {
+        affluencesParkingsRepository.deleteAll();
+    }
 }
+
