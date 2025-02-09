@@ -16,13 +16,13 @@ public class Sortie {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "x", nullable = false, precision = 10, scale = 2)
+    @Column(name = "x")
     private BigDecimal x;
 
-    @Column(name = "y", nullable = false, precision = 10, scale = 2)
+    @Column(name = "y")
     private BigDecimal y;
 
-    @Column(name = "date_creation", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "date_creation", updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime dateCreation;
 
     @Column(name = "date_modification", columnDefinition = "TIMESTAMP WITH TIME ZONE")

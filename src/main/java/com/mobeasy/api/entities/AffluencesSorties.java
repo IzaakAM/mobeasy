@@ -1,5 +1,6 @@
 package com.mobeasy.api.entities;
 
+import com.mobeasy.api.entities.Sortie;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 
@@ -20,7 +21,7 @@ public class AffluencesSorties {
 
     @ManyToOne
     @JoinColumn(name = "sortie_id", referencedColumnName = "id", nullable = false)
-    private Sortie sortie;
+    private com.mobeasy.api.entities.Sortie sortie;
 
     // Getters et setters
     public Short getId() {
@@ -47,7 +48,7 @@ public class AffluencesSorties {
         this.timestamp = timestamp;
     }
 
-    public Sortie getSortie() {
+    public com.mobeasy.api.entities.Sortie getSortie() {
         return sortie;
     }
 
