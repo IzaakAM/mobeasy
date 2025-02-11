@@ -91,6 +91,12 @@
 			<version>${jjwt.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<scope>compile</scope>
+			<version>2.15.2</version>
+		</dependency>
 	</dependencies>
 
 

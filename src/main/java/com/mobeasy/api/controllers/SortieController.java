@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/sorties")
 @Tag(name = "Sorties", description = "Gestion des sorties")
+@RequiredArgsConstructor
 public class SortieController {
 
     private final SortieService sortieService;
 
-    public SortieController(SortieService sortieService) {
-        this.sortieService = sortieService;
-    }
 
     // 1) CRÉATION
     @Operation(summary = "Créer une nouvelle sortie",
