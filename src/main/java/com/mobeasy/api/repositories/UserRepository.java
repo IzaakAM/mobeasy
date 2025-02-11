@@ -1,9 +1,13 @@
 package com.mobeasy.api.repositories;
 
 import com.mobeasy.api.entities.User;
+import jakarta.validation.constraints.Email;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByEmail(@Email String email);
 
-public interface UserRepository {
-    Optional<User> findByUsernameOrEmail(String username, String email);
+    boolean existsByEmail(@Email String email);
 }

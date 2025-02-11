@@ -1,27 +1,34 @@
 package com.mobeasy.api.controllers;
 
 import com.mobeasy.api.entities.Parking;
+import com.mobeasy.api.entities.User;
+import com.mobeasy.api.exceptions.ForbiddenException;
 import com.mobeasy.api.services.ParkingService;
+import com.mobeasy.api.services.security.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/parkings")
 @Tag(name = "Parkings", description = "Gestion des parkings")
 public class ParkingController {
 
-    @Autowired
-    private ParkingService parkingService;
+    private final ParkingService parkingService;
+
+    private final AuthService authService;
 
     @Operation(summary = "Récupérer tous les parkings",
             description = "Retourne la liste de tous les parkings ayant une capacité supérieure à 0."
@@ -70,19 +77,33 @@ public class ParkingController {
         }
     }
 
-    @Operation(summary = "Ajouter un nouveau parking",
-            description = "Crée un nouveau parking avec les informations fournies dans le corps de la requête.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Parking ajouté avec succès",
-                    content = @Content(schema = @Schema(implementation = Parking.class))),
+
+
+    @Operation(
+        summary = "Ajouter un nouveau parking",
+        description = "Crée un nouveau parking avec les informations fournies dans le corps de la requête.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Parking ajouté avec succès", content = @Content(schema = @Schema(implementation = Parking.class))),
             @ApiResponse(responseCode = "400", description = "Requête invalide")
-    })
+        },
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PostMapping
     public ResponseEntity<Parking> addParking(
             @Parameter(description = "Objet Parking à ajouter", required = true)
-            @RequestBody Parking parking) {
-        return ResponseEntity.ok(parkingService.saveParking(parking));
+            @RequestBody Parking parking,
+            Authentication authentication) {
+
+        User user = authService.authenticate(authentication);
+
+        if (user.isAdmin()) {
+            return ResponseEntity.ok(parkingService.saveParking(parking));
+        } else {
+            throw new ForbiddenException("User is not allow to add a parking.");
+        }
     }
+
+
 
     @Operation(summary = "Supprimer un parking par son ID",
             description = "Supprime le parking correspondant à l'identifiant fourni.")

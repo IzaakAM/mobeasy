@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +21,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/affluences-parkings")
 @Tag(name = "Affluences des parkings", description = "Gestion des affluences des parkings")
+@RequiredArgsConstructor
 public class AffluencesParkingsController {
 
-    @Autowired
-    private AffluencesParkingsService affluencesParkingsService;
+    private final AffluencesParkingsService affluencesParkingsService;
 
     @Operation(summary = "Créer une nouvelle affluence par ID de parking",
             description = "Crée une nouvelle entrée d'affluence pour un parking en utilisant l'ID du parking et le nombre de véhicules.")

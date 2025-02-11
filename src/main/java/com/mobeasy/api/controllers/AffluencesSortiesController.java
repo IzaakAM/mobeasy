@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +21,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/affluences-sorties")
 @Tag(name = "Affluences des sorties", description = "Gestion des affluences des sorties")
+@RequiredArgsConstructor
 public class AffluencesSortiesController {
 
-    @Autowired
-    private AffluencesSortiesService affluencesSortiesService;
+    private final AffluencesSortiesService affluencesSortiesService;
 
     // =========================================================================
     // 1) CRÉER UNE NOUVELLE AFFLUENCE PAR ID DE SORTIE

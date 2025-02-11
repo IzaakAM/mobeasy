@@ -2,16 +2,16 @@ package com.mobeasy.api.services;
 
 import com.mobeasy.api.entities.Parking;
 import com.mobeasy.api.repositories.ParkingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ParkingService {
 
-    @Autowired
-    private ParkingRepository parkingRepository;
+    private final ParkingRepository parkingRepository;
 
     public Parking findParkingByName(String name) {
         return parkingRepository.findByName(name);

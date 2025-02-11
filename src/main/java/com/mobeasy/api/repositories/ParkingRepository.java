@@ -9,9 +9,7 @@ import java.util.List;
 @Repository
 public interface ParkingRepository extends JpaRepository<Parking, Short> {
 
-    // Trouver un parking par son nom
     Parking findByName(String name);
 
-    // Trouver les parkings avec une capacité minimale donnée
     List<Parking> findByCapacityGreaterThanEqual(int capacity);
 }
