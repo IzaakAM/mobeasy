@@ -88,6 +88,21 @@ public class ParkingController {
         return new ResponseEntity<>(parkingService.saveParking(parking), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/all")
+    @Operation(
+            summary = "Supprimer tous les parkings",
+            description = "Supprime définitivement tous les parkings de la base de données.",
+            security = @SecurityRequirement(name = "bearerAuth"),
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Tous les parkings ont été supprimés"),
+                    @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+            }
+    )
+    public ResponseEntity<Void> deleteAllParkings() {
+        parkingService.deleteAllParkings();
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Supprimer un parking par son ID",
