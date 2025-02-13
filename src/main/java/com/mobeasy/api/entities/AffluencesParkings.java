@@ -1,10 +1,17 @@
 package com.mobeasy.api.entities;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.ZonedDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Affluences_parkings")
+@Tag(name = "Affluences des parkings", description = "gestion de l'affluence des parkings")
 public class AffluencesParkings {
 
     @Id
@@ -21,37 +28,4 @@ public class AffluencesParkings {
     @ManyToOne
     @JoinColumn(name = "parking_id", referencedColumnName = "id", nullable = false)
     private Parking parking;
-
-    // Getters et setters
-    public Short getId() {
-        return id;
-    }
-
-    public void setId(Short id) {
-        this.id = id;
-    }
-
-    public Integer getNbVehicule() {
-        return nbVehicule;
-    }
-
-    public void setNbVehicule(Integer nbVehicule) {
-        this.nbVehicule = nbVehicule;
-    }
-
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(ZonedDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Parking getParking() {
-        return parking;
-    }
-
-    public void setParking(Parking parking) {
-        this.parking = parking;
-    }
 }

@@ -6,13 +6,15 @@ import org.springframework.stereotype.Repository;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AffluencesSortiesRepository extends JpaRepository<AffluencesSorties, Short> {
 
-    // Trouver les affluences d'une sortie donnée
-    List<AffluencesSorties> findBySortieId(Short sortieId);
+    Optional<AffluencesSorties> findFirstBySortieIdOrderByTimestampDesc(Short sortieId);
+    List<AffluencesSorties> findBySortie_IdOrderByTimestampDesc(Short sortieId);
 
-    // Trouver les affluences après une certaine date
-    List<AffluencesSorties> findByTimestampAfter(ZonedDateTime timestamp);
+    // Équivalents pour le nom de la sortie
+    List<AffluencesSorties> findBySortie_NameOrderByTimestampDesc(String sortieName);
 }
+

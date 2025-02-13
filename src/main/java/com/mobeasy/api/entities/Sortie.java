@@ -1,9 +1,14 @@
 package com.mobeasy.api.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Sorties")
 public class Sortie {
@@ -16,64 +21,15 @@ public class Sortie {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "x", nullable = false, precision = 10, scale = 2)
+    @Column(name = "x")
     private BigDecimal x;
 
-    @Column(name = "y", nullable = false, precision = 10, scale = 2)
+    @Column(name = "y")
     private BigDecimal y;
 
-    @Column(name = "date_creation", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "date_creation", updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime dateCreation;
 
     @Column(name = "date_modification", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime dateModification;
-
-    // Getters et setters
-    public Short getId() {
-        return id;
-    }
-
-    public void setId(Short id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getX() {
-        return x;
-    }
-
-    public void setX(BigDecimal x) {
-        this.x = x;
-    }
-
-    public BigDecimal getY() {
-        return y;
-    }
-
-    public void setY(BigDecimal y) {
-        this.y = y;
-    }
-
-    public ZonedDateTime getDateCreation() {
-        return dateCreation;
-    }
-
-    public void setDateCreation(ZonedDateTime dateCreation) {
-        this.dateCreation = dateCreation;
-    }
-
-    public ZonedDateTime getDateModification() {
-        return dateModification;
-    }
-
-    public void setDateModification(ZonedDateTime dateModification) {
-        this.dateModification = dateModification;
-    }
 }

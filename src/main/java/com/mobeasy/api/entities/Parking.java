@@ -1,12 +1,14 @@
 package com.mobeasy.api.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
+@Data
 @Entity
 @Table(name = "Parkings")
 public class Parking {
@@ -39,62 +41,5 @@ public class Parking {
     @UpdateTimestamp
     @Column(name = "date_modification", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime dateModification;
-
-    // Getters and setters
-    public Short getId() {
-        return id;
-    }
-
-    public void setId(Short id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getX() {
-        return x;
-    }
-
-    public void setX(BigDecimal x) {
-        this.x = x;
-    }
-
-    public BigDecimal getY() {
-        return y;
-    }
-
-    public void setY(BigDecimal y) {
-        this.y = y;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    public ZonedDateTime getDateCreation() {
-        return dateCreation;
-    }
-
-    public void setDateCreation(ZonedDateTime dateCreation) {
-        this.dateCreation = dateCreation;
-    }
-
-    public ZonedDateTime getDateModification() {
-        return dateModification;
-    }
-
-    public void setDateModification(ZonedDateTime dateModification) {
-        this.dateModification = dateModification;
-    }
 
 }

@@ -1,6 +1,4 @@
-package com.mobeasy.api.dto;
-
-import java.util.Objects;
+package com.mobeasy.api.entities.dto;
 
 public record AffluencesParkingsDTO(
         String parkingName,

@@ -19,6 +19,7 @@
 		<spring-boot.version>3.4.1</spring-boot.version>
 		<lombok.version>1.18.36</lombok.version>
 		<springdoc.version>2.6.0</springdoc.version>
+		<jjwt.version>0.12.6</jjwt.version>
 	</properties>
 
 
@@ -35,6 +36,11 @@
 			<version>${spring-boot.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -65,7 +71,34 @@
 			<version>${springdoc.version}</version>
 		</dependency>
 
+
+		<!-- JSON Web Token -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<scope>compile</scope>
+			<version>2.15.2</version>
+		</dependency>
 	</dependencies>
+
 
 	<repositories>
 		<repository>
@@ -73,6 +106,8 @@
 			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 	</repositories>
+
+
 
 	<build>
 		<plugins>
