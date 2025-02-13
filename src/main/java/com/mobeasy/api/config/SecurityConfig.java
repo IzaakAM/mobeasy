@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.http.HttpMethod;
+
 
 import java.io.IOException;
 
@@ -36,7 +38,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/users/register", "/api/users/login", "/api/users/logout").permitAll()
-                        .requestMatchers("/api/parkings/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/parkings/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/sorties/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/affluences-parkings/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/affluences-sorties/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new BearerTokenFilter(), UsernamePasswordAuthenticationFilter.class)
