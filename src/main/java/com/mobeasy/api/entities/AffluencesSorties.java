@@ -3,8 +3,13 @@ package com.mobeasy.api.entities;
 import com.mobeasy.api.entities.Sortie;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.ZonedDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Affluences_sorties")
 @Tag(name = "Affluences des sorties", description = "gestion de l'affluence des sorties")
@@ -25,36 +30,4 @@ public class AffluencesSorties {
     @JoinColumn(name = "sortie_id", referencedColumnName = "id", nullable = false)
     private com.mobeasy.api.entities.Sortie sortie;
 
-    // Getters et setters
-    public Short getId() {
-        return id;
-    }
-
-    public void setId(Short id) {
-        this.id = id;
-    }
-
-    public Integer getNbVehicule() {
-        return nbVehicule;
-    }
-
-    public void setNbVehicule(Integer nbVehicule) {
-        this.nbVehicule = nbVehicule;
-    }
-
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(ZonedDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public com.mobeasy.api.entities.Sortie getSortie() {
-        return sortie;
-    }
-
-    public void setSortie(Sortie sortie) {
-        this.sortie = sortie;
-    }
 }

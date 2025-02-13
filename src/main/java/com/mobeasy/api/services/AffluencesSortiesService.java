@@ -5,7 +5,7 @@ import com.mobeasy.api.entities.Sortie;
 import com.mobeasy.api.entities.dto.AffluencesSortiesDTO;
 import com.mobeasy.api.repositories.AffluencesSortiesRepository;
 import com.mobeasy.api.services.mappers.AffluenceSortieMapperService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -14,16 +14,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AffluencesSortiesService {
 
-    @Autowired
-    private AffluencesSortiesRepository affluencesSortiesRepository;
-
-    @Autowired
-    private SortieService sortieService; // Service pour récupérer Sortie par nom ou ID
-
-    @Autowired
-    private AffluenceSortieMapperService mapperService;
+    private final AffluencesSortiesRepository affluencesSortiesRepository;
+    private final SortieService sortieService; // Service pour récupérer Sortie par nom ou ID
+    private final AffluenceSortieMapperService mapperService;
 
     // 1. Créer une nouvelle affluence avec sortieId et nbVehicule
     public AffluencesSorties createAffluenceById(Short sortieId, Integer nbVehicule) {

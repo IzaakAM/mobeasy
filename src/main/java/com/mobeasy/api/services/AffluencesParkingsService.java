@@ -5,7 +5,7 @@ import com.mobeasy.api.entities.AffluencesParkings;
 import com.mobeasy.api.entities.Parking;
 import com.mobeasy.api.repositories.AffluencesParkingsRepository;
 import com.mobeasy.api.services.mappers.AffluenceParkingMapperService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -13,16 +13,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AffluencesParkingsService {
 
-    @Autowired
-    private AffluencesParkingsRepository affluencesParkingsRepository;
-
-    @Autowired
-    private ParkingService parkingService; // Service pour récupérer Parking par nom ou ID
-
-    @Autowired
-    private AffluenceParkingMapperService mapperService;
+    private final AffluencesParkingsRepository affluencesParkingsRepository;
+    private final ParkingService parkingService; // Service pour récupérer Parking par nom ou ID
+    private final AffluenceParkingMapperService mapperService;
 
     // 1. Créer une nouvelle affluence avec parkingId et nbVehicule
     public AffluencesParkings createAffluenceById(Short parkingId, Integer nbVehicule) {
